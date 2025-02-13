@@ -1,0 +1,47 @@
+<mat-drawer-container class="example-container" autosize cdkDropListGroup>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <p>Componentes</p>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="components"
+      cdkDropListSortingDisabled
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (item of components; track item) {
+        <div class="example-form">
+          <mat-form-field class="example-full-width" cdkDrag>
+            <mat-label>{{item}}</mat-label>
+            <input matInput placeholder="Ex. Pizza" value="Sushi">
+          </mat-form-field>
+        </div>
+        <!-- <div class="example-box" cdkDrag>{{item}}</div> -->
+      }
+    </div>
+
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <!-- cdkDrag -->
+    <div class="example-boundary"
+      cdkDropList
+      [cdkDropListData]="workSpace"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <!-- <div *CdkDragPlaceholder>XD</div> -->
+      @for (item of workSpace; track item) {
+        <!-- <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>{{item}}</div> -->
+        <div class="example-form example-box" cdkDragBoundary=".example-boundary" cdkDrag>
+          <mat-form-field class="example-full-width">
+            <mat-label>{{item}}</mat-label>
+            <input matInput placeholder="Ex. Pizza" value="Sushi">
+          </mat-form-field>
+        </div>
+      }
+    </div>
+    <!-- cdkDrag -->
+    <button type="button" mat-button (click)="drawer.toggle()">
+      Toggle sidenav
+    </button>
+  </div>
+</mat-drawer-container>
