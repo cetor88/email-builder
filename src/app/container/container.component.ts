@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, QueryList, ViewChildren } from '@angular/core';
 
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatIconModule} from '@angular/material/icon';
@@ -37,6 +37,7 @@ export class ContainerComponent {
   // components = ['componente1', 'componente2', 'componente3']; //TODO: generar un array con los componentes que se pueden agregar
   workSpace: string[] = [];
   spanSelected: any;
+  @ViewChildren(DraggableItemComponent) draggableItems!: QueryList<DraggableItemComponent>;
 
   /*Agrega el componente al workSpace*/
   addDraggableComponent(type: 'label' | 'input') {
@@ -66,8 +67,9 @@ export class ContainerComponent {
   }
 
   changeProperties(type: any): void {
-    const span = document.getElementById(this.spanSelected);
-    if (!span) {return}
+    const selectedComponent = this.draggableItems.find(item => item.spanId === this.spanSelected);
+    if (!selectedComponent) { return; }
+    const span = selectedComponent.editableSpan.nativeElement;
 
     switch (type) {
       case 'color':
