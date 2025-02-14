@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-
+import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -10,12 +10,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FormsModule} from '@angular/forms';
 
-import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, copyArrayItem, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DraggableItemComponent } from '../draggable-item/draggable-item.component';
 
 const COMPONENTS = [
   MatButtonToggleModule,
-  CdkDrag,
   CdkDropList,
   CdkDropListGroup,
   MatButtonModule,
@@ -23,7 +22,8 @@ const COMPONENTS = [
   MatFormFieldModule,
   MatInputModule,
   MatSidenavModule,
-  FormsModule
+  FormsModule,
+  MatIconModule
 ];
 
 @Component({
@@ -34,23 +34,34 @@ const COMPONENTS = [
   styleUrl: './container.component.css'
 })
 export class ContainerComponent {
-  components = ['componente1', 'componente2', 'componente3'];
-  workSpace = [];
+  // components = ['componente1', 'componente2', 'componente3']; //TODO: generar un array con los componentes que se pueden agregar
+  workSpace: string[] = [];
 
-  drop2(event: CdkDragDrop<string[] | any>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      copyArrayItem( //transferArrayItem
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+  /*Agrega el componente al workSpace*/
+  addDraggableComponent(type: 'label' | 'input') {
+    if (type === 'label') {
+      const newLabel = `Etiqueta ${this.workSpace.length + 1}`;
+      this.workSpace.push(newLabel);
     }
+  }
 
-    console.log('components :>> ', this.components);
-    console.log('workSpace :>> ', this.workSpace);
+  /*Se encarga de que al mover el compoenete lo posicione*/
+  drop(event: CdkDragDrop<string[] | any>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+       this.workSpace, // event.container.data, html: [cdkDropListData]="workSpace"
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      // this.addDraggableComponent();
+      // copyArrayItem(
+      //   event.previousContainer.data,
+      //   event.container.data,
+      //   event.previousIndex,
+      //   event.currentIndex,
+      // );
+    }
   }
 
   executeCommand(command : string) {
@@ -94,17 +105,4 @@ export class ContainerComponent {
   accion(e: any) {
     console.log('entre a editar :>> ', e);
   }
-
-  draggableLabels: string[] = [];
-
-  addDraggableLabel() {
-    const newLabel = `Etiqueta ${this.draggableLabels.length + 1}`;
-    this.draggableLabels.push(newLabel);
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    console.log('demo');
-    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  }
-
 }

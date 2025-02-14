@@ -9,5 +9,10 @@ import { Component, Input } from '@angular/core';
   styleUrl: './draggable-item.component.css'
 })
 export class DraggableItemComponent {
-  @Input() label: string = 'Etiqueta arrastrable';
+  @Input() label: string = 'Etiqueta editable';
+
+  onInput(event: Event): void {
+    const input = event.target as HTMLElement;
+    this.label = input.innerText;
+  }
 }

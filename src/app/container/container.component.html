@@ -10,20 +10,9 @@
     </div>
     <div>
       <h3>Componentes</h3>
-      <div class="example-list"
-        cdkDropList
-        [cdkDropListData]="components"
-        cdkDropListSortingDisabled
-      >
-        @for (item of components; track item) {
-          <div cdkDrag>
-            <mat-form-field class="example-full-width">
-              <mat-label>{{item}}</mat-label>
-              <input matInput placeholder="Ex. Pizza" value="Sushi">
-            </mat-form-field>
-          </div>
-        }
-      </div>
+      <button (dblclick)="addDraggableComponent('label')">
+        <mat-icon aria-hidden="false" aria-label="text_fields" fontIcon="text_fields"/>
+      </button>
     </div>
   </div>
 
@@ -31,33 +20,23 @@
     <legend>workSpace</legend>
     <div class="example-boundary"
       cdkDropList
-      [cdkDropListData]="workSpace"
-      (cdkDropListDropped)="drop2($event)"
+      cdkDropListOrientation="mixed"
+      (cdkDropListDropped)="drop($event)"
     >
       <!-- <div *CdkDragPlaceholder>XD</div> -->
-      @for (item of workSpace; track item; let idx = $index) {
-        <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>
+      @for (type of workSpace; track type; let idx = $index) {
+        <!-- <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>
           <mat-form-field class="example-full-width">
-            <mat-label>{{item}}</mat-label>
+            <mat-label>{{type}}</mat-label>
             <input matInput placeholder="Ex. Pizza" value="Sushi" (keydown)="keydown()" (dblclick)="accion($event)">
           </mat-form-field>
-        </div>
+        </div> -->
+        <app-draggable-item
+          [label]="type"
+        />
       } @empty {
-        <h6>Arrastra un componente</h6>
+        <h6>Agrega un componente</h6>
       }
     </div>
-  </div>
-</div>
-
-
-<div class="container">
-  <button (click)="addDraggableLabel()">Añadir etiqueta arrastrable</button>
-  <div cdkDropList
-    [cdkDropListData]="draggableLabels"
-    (cdkDropListDropped)="drop($event)">
-    @for (label of draggableLabels; track label;) {
-
-      <app-draggable-item [label]="label"></app-draggable-item>
-    }
   </div>
 </div>
