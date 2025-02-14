@@ -65,10 +65,25 @@ export class ContainerComponent {
     }
   }
 
-  changeColor(): void {
+  changeProperties(type: any): void {
     const span = document.getElementById(this.spanSelected);
-    if (span) {
-      span.style.color = 'red';
+    if (!span) {return}
+
+    switch (type) {
+      case 'color':
+        span.style.color = 'red';
+        break;
+      case 'bold':
+        span.style.fontWeight = span.style.fontWeight === 'bold' ? 'normal' : 'bold';
+        break;
+      case 'italic':
+        span.style.fontStyle = span.style.fontStyle === 'italic' ? 'normal' : 'italic';
+        break;
+      case 'underline':
+        span.style.textDecoration = span.style.textDecoration === 'underline' ? 'none' : 'underline';
+        break;
+      default:
+        break;
     }
   }
 

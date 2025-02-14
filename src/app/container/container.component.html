@@ -7,8 +7,17 @@
         <mat-button-toggle value="italic" id="btnItalic" (change)="executeCommand('italic')">Italic</mat-button-toggle>
         <mat-button-toggle value="underline" id="btnUnderline" (change)="executeCommand('underline')">Underline</mat-button-toggle>
       </mat-button-toggle-group> -->
-      <button (click)="changeColor()">
+      <button (click)="changeProperties('color')">
         <mat-icon aria-hidden="false" aria-label="format_paint" fontIcon="format_paint"/>
+      </button>
+      <button (click)="changeProperties('bold')">
+        <mat-icon aria-hidden="false" aria-label="format_bold" fontIcon="format_bold"/>
+      </button>
+      <button (click)="changeProperties('italic')">
+        <mat-icon aria-hidden="false" aria-label="format_italic" fontIcon="format_italic"/>
+      </button>
+      <button (click)="changeProperties('underline')">
+        <mat-icon aria-hidden="false" aria-label="format_underlined" fontIcon="format_underlined"/>
       </button>
     </div>
     <div>
