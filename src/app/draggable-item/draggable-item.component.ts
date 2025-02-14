@@ -1,5 +1,5 @@
 import { CdkDrag } from '@angular/cdk/drag-drop';
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-draggable-item',
@@ -10,9 +10,17 @@ import { Component, Input } from '@angular/core';
 })
 export class DraggableItemComponent {
   @Input() label: string = 'Etiqueta editable';
+  @Input() spanId!: string;
+  @Output() select: EventEmitter<any> = new EventEmitter();
+  @ViewChild('editableSpan') editableSpan!: ElementRef;
 
   onInput(event: Event): void {
     const input = event.target as HTMLElement;
     this.label = input.innerText;
+  }
+
+  selected(event: Event) {
+    const spanId = this.editableSpan.nativeElement.id;
+    this.select.emit({ event, spanId });
   }
 }

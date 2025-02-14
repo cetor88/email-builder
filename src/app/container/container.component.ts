@@ -36,6 +36,7 @@ const COMPONENTS = [
 export class ContainerComponent {
   // components = ['componente1', 'componente2', 'componente3']; //TODO: generar un array con los componentes que se pueden agregar
   workSpace: string[] = [];
+  spanSelected: any;
 
   /*Agrega el componente al workSpace*/
   addDraggableComponent(type: 'label' | 'input') {
@@ -64,45 +65,14 @@ export class ContainerComponent {
     }
   }
 
-  executeCommand(command : string) {
-    console.log('command :>> ', command);
-    document.execCommand(command, false, '');
-    this.highlightEditorButtons();
-  }
-
-  keydown() {
-    this.highlightEditorButtons();
-  }
-
-  highlightEditorButtons(){
-    const isBold = document.queryCommandValue("bold");
-    const isItalic = document.queryCommandValue("italic");
-    const isUnderline = document.queryCommandValue("underline");
-
-    const btnBold = document.getElementById('btnBold');
-    const btnItalic = document.getElementById('btnItalic');
-    const btnUnderline = document.getElementById('btnUnderline');
-
-    if (isBold === 'true') {
-      btnBold!.style.backgroundColor = "gray";
-    } else {
-      btnBold!.style.backgroundColor = "lightgray";
-    }
-
-    if (isItalic === 'true') {
-        btnItalic!.style.backgroundColor = "gray";
-    } else {
-       btnItalic!.style.backgroundColor = "lightgray";
-    }
-
-    if (isUnderline === 'true') {
-       btnUnderline!.style.backgroundColor = "gray";
-    } else {
-        btnUnderline!.style.backgroundColor = "lightgray";
+  changeColor(): void {
+    const span = document.getElementById(this.spanSelected);
+    if (span) {
+      span.style.color = 'red';
     }
   }
 
-  accion(e: any) {
-    console.log('entre a editar :>> ', e);
+  handleSelected(event: any) {
+    this.spanSelected = event.spanId;
   }
 }

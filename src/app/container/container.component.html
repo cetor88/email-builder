@@ -2,11 +2,14 @@
   <div class="example-container">
     <div>
       <h3>Barra de herramientas</h3>
-      <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+      <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
         <mat-button-toggle value="bold" id="btnBold" (change)="executeCommand('bold')">Bold</mat-button-toggle>
         <mat-button-toggle value="italic" id="btnItalic" (change)="executeCommand('italic')">Italic</mat-button-toggle>
         <mat-button-toggle value="underline" id="btnUnderline" (change)="executeCommand('underline')">Underline</mat-button-toggle>
-      </mat-button-toggle-group>
+      </mat-button-toggle-group> -->
+      <button (click)="changeColor()">
+        <mat-icon aria-hidden="false" aria-label="format_paint" fontIcon="format_paint"/>
+      </button>
     </div>
     <div>
       <h3>Componentes</h3>
@@ -25,14 +28,10 @@
     >
       <!-- <div *CdkDragPlaceholder>XD</div> -->
       @for (type of workSpace; track type; let idx = $index) {
-        <!-- <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>
-          <mat-form-field class="example-full-width">
-            <mat-label>{{type}}</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Sushi" (keydown)="keydown()" (dblclick)="accion($event)">
-          </mat-form-field>
-        </div> -->
         <app-draggable-item
           [label]="type"
+          [spanId]="'editable-span-' + idx"
+          (select)="handleSelected($event)"
         />
       } @empty {
         <h6>Agrega un componente</h6>
