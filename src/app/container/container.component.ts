@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -8,12 +10,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FormsModule} from '@angular/forms';
 
-import { CdkDrag, CdkDragDrop, CdkDragPlaceholder, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, copyArrayItem, moveItemInArray } from '@angular/cdk/drag-drop';
 
 const COMPONENTS = [
+  MatButtonToggleModule,
   CdkDrag,
   CdkDropList,
-  CdkDragPlaceholder,
   CdkDropListGroup,
   MatButtonModule,
   MatSelectModule,
@@ -35,11 +37,10 @@ export class ContainerComponent {
   workSpace = [];
 
   drop(event: CdkDragDrop<string[] | any>) {
-    console.log('event :>> ', event);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(
+      copyArrayItem( //transferArrayItem
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
@@ -49,5 +50,47 @@ export class ContainerComponent {
 
     console.log('components :>> ', this.components);
     console.log('workSpace :>> ', this.workSpace);
+  }
+
+  executeCommand(command : string) {
+    console.log('command :>> ', command);
+    document.execCommand(command, false, '');
+    this.highlightEditorButtons();
+  }
+
+  keydown() {
+    this.highlightEditorButtons();
+  }
+
+  highlightEditorButtons(){
+    const isBold = document.queryCommandValue("bold");
+    const isItalic = document.queryCommandValue("italic");
+    const isUnderline = document.queryCommandValue("underline");
+    
+    const btnBold = document.getElementById('btnBold');
+    const btnItalic = document.getElementById('btnItalic');
+    const btnUnderline = document.getElementById('btnUnderline');
+
+    if (isBold === 'true') {
+      btnBold!.style.backgroundColor = "gray";
+    } else {
+      btnBold!.style.backgroundColor = "lightgray";
+    }
+    
+    if (isItalic === 'true') {
+        btnItalic!.style.backgroundColor = "gray";
+    } else {
+       btnItalic!.style.backgroundColor = "lightgray";
+    }
+
+    if (isUnderline === 'true') {
+       btnUnderline!.style.backgroundColor = "gray";
+    } else {
+        btnUnderline!.style.backgroundColor = "lightgray";
+    }
+  }
+
+  accion(e: any) {
+    console.log('entre a editar :>> ', e);
   }
 }
