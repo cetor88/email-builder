@@ -104,3 +104,23 @@ mat-button-toggle-group {
 /* .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 } */
+
+
+.container {
+  width: 300px;
+  margin: 0 auto;
+}
+
+button {
+  display: block;
+  margin-bottom: 10px;
+}
+
+[cdkDropList] {
+  border: 1px solid #ccc;
+  min-height: 100px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

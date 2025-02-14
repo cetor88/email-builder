@@ -32,7 +32,7 @@
     <div class="example-boundary"
       cdkDropList
       [cdkDropListData]="workSpace"
-      (cdkDropListDropped)="drop($event)"
+      (cdkDropListDropped)="drop2($event)"
     >
       <!-- <div *CdkDragPlaceholder>XD</div> -->
       @for (item of workSpace; track item; let idx = $index) {
@@ -46,5 +46,18 @@
         <h6>Arrastra un componente</h6>
       }
     </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <button (click)="addDraggableLabel()">Añadir etiqueta arrastrable</button>
+  <div cdkDropList
+    [cdkDropListData]="draggableLabels"
+    (cdkDropListDropped)="drop($event)">
+    @for (label of draggableLabels; track label;) {
+
+      <app-draggable-item [label]="label"></app-draggable-item>
+    }
   </div>
 </div>

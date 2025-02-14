@@ -1,0 +1,6 @@
+[cdkDrag] {
+  padding: 10px;
+  border: 1px solid #000;
+  background-color: #f0f0f0;
+  cursor: move;
+}

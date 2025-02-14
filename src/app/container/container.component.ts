@@ -11,6 +11,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {FormsModule} from '@angular/forms';
 
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, copyArrayItem, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DraggableItemComponent } from '../draggable-item/draggable-item.component';
 
 const COMPONENTS = [
   MatButtonToggleModule,
@@ -28,7 +29,7 @@ const COMPONENTS = [
 @Component({
   selector: 'app-container',
   standalone: true,
-  imports: [COMPONENTS],
+  imports: [COMPONENTS, DraggableItemComponent],
   templateUrl: './container.component.html',
   styleUrl: './container.component.css'
 })
@@ -36,7 +37,7 @@ export class ContainerComponent {
   components = ['componente1', 'componente2', 'componente3'];
   workSpace = [];
 
-  drop(event: CdkDragDrop<string[] | any>) {
+  drop2(event: CdkDragDrop<string[] | any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -66,7 +67,7 @@ export class ContainerComponent {
     const isBold = document.queryCommandValue("bold");
     const isItalic = document.queryCommandValue("italic");
     const isUnderline = document.queryCommandValue("underline");
-    
+
     const btnBold = document.getElementById('btnBold');
     const btnItalic = document.getElementById('btnItalic');
     const btnUnderline = document.getElementById('btnUnderline');
@@ -76,7 +77,7 @@ export class ContainerComponent {
     } else {
       btnBold!.style.backgroundColor = "lightgray";
     }
-    
+
     if (isItalic === 'true') {
         btnItalic!.style.backgroundColor = "gray";
     } else {
@@ -93,4 +94,17 @@ export class ContainerComponent {
   accion(e: any) {
     console.log('entre a editar :>> ', e);
   }
+
+  draggableLabels: string[] = [];
+
+  addDraggableLabel() {
+    const newLabel = `Etiqueta ${this.draggableLabels.length + 1}`;
+    this.draggableLabels.push(newLabel);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log('demo');
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  }
+
 }
