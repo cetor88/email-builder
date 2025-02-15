@@ -21,6 +21,24 @@ export class DraggableItemComponent {
 
   selected(event: Event) {
     const spanId = this.editableSpan.nativeElement.id;
-    this.select.emit({ event, spanId });
+    const selectedText = this.getSelectedText();
+    this.select.emit({ event, spanId, selectedText });
+  }
+
+  getSelectedText(): string {
+    const selection = window.getSelection();
+    return selection ? selection.toString() : '';
+  }
+
+  addHyperlink(url: string): void {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const link = document.createElement('a');
+      link.href = url;
+      link.textContent = range.toString();
+      range.deleteContents();
+      range.insertNode(link);
+    }
   }
 }

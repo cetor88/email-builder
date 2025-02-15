@@ -37,6 +37,7 @@ export class ContainerComponent {
   // components = ['componente1', 'componente2', 'componente3']; //TODO: generar un array con los componentes que se pueden agregar
   workSpace: string[] = [];
   spanSelected: any;
+  selectedText: string = '';
   @ViewChildren(DraggableItemComponent) draggableItems!: QueryList<DraggableItemComponent>;
 
   /*Agrega el componente al workSpace*/
@@ -91,5 +92,14 @@ export class ContainerComponent {
 
   handleSelected(event: any) {
     this.spanSelected = event.spanId;
+    this.selectedText = event.selectedText;
+    console.log('Texto seleccionado:', this.selectedText);
+  }
+
+  addHyperlink(url: string): void {
+    const selectedComponent = this.draggableItems.find(item => item.spanId === this.spanSelected);
+    if (selectedComponent) {
+      selectedComponent.addHyperlink(url);
+    }
   }
 }
