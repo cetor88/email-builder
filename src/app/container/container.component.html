@@ -16,13 +16,13 @@
       </button>
 
       <input #urlInput type="text" placeholder="Enter URL">
-      <button (click)="addHyperlink(urlInput.value)">
+      <button (click)="changeProperties('link', urlInput.value)">
         <mat-icon aria-hidden="false" aria-label="link" fontIcon="link"/>
       </button>
     </div>
     <div>
       <h3>Componentes</h3>
-      <button (dblclick)="addDraggableComponent('label')">
+      <button (click)="addDraggableComponent('label')">
         <mat-icon aria-hidden="false" aria-label="text_fields" fontIcon="text_fields"/>
       </button>
     </div>

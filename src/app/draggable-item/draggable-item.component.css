@@ -1,6 +1,17 @@
 [cdkDrag] {
+  width: 100px;
   padding: 10px;
   border: 1px solid #000;
   background-color: #f0f0f0;
+  position: relative;
+}
+
+.example-handle {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  color: #ccc;
   cursor: move;
+  width: 14px;
+  height: 14px;
 }

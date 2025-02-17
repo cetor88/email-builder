@@ -37,7 +37,7 @@ export class ContainerComponent {
   // components = ['componente1', 'componente2', 'componente3']; //TODO: generar un array con los componentes que se pueden agregar
   workSpace: string[] = [];
   spanSelected: any;
-  selectedText: string = '';
+  selectedText: any;
   @ViewChildren(DraggableItemComponent) draggableItems!: QueryList<DraggableItemComponent>;
 
   /*Agrega el componente al workSpace*/
@@ -67,17 +67,31 @@ export class ContainerComponent {
     }
   }
 
-  changeProperties(type: any): void {
+  /*cambia las propiedades del objeto seleccionado*/
+  changeProperties(type: any, url?: any): void {
     const selectedComponent = this.draggableItems.find(item => item.spanId === this.spanSelected);
     if (!selectedComponent) { return; }
     const span = selectedComponent.editableSpan.nativeElement;
+    const selection = this.selectedText;
+    const range = selection.getRangeAt(0);
+    const spanWrapper = document.createElement('span');
 
     switch (type) {
       case 'color':
-        span.style.color = 'red';
+        if (selection.toString().length > 0) {
+          spanWrapper.style.color = 'red';
+          range.surroundContents(spanWrapper);
+        } else {
+          span.style.color = 'red';
+        }
         break;
       case 'bold':
-        span.style.fontWeight = span.style.fontWeight === 'bold' ? 'normal' : 'bold';
+        if (selection.toString().length > 0) {
+          spanWrapper.style.fontWeight = span.style.fontWeight === 'bold' ? 'normal' : 'bold';
+          range.surroundContents(spanWrapper);
+        } else {
+          span.style.fontWeight = span.style.fontWeight === 'bold' ? 'normal' : 'bold';
+        }
         break;
       case 'italic':
         span.style.fontStyle = span.style.fontStyle === 'italic' ? 'normal' : 'italic';
@@ -85,21 +99,24 @@ export class ContainerComponent {
       case 'underline':
         span.style.textDecoration = span.style.textDecoration === 'underline' ? 'none' : 'underline';
         break;
+      case 'link':
+        if (selection.toString().length > 0) {
+          const range = selection.getRangeAt(0);
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = range.toString();
+          range.deleteContents();
+          range.insertNode(link);
+        }
+        break;
       default:
         break;
     }
   }
 
+  /*retorna el objeto seleccionado*/
   handleSelected(event: any) {
     this.spanSelected = event.spanId;
     this.selectedText = event.selectedText;
-    console.log('Texto seleccionado:', this.selectedText);
-  }
-
-  addHyperlink(url: string): void {
-    const selectedComponent = this.draggableItems.find(item => item.spanId === this.spanSelected);
-    if (selectedComponent) {
-      selectedComponent.addHyperlink(url);
-    }
   }
 }
