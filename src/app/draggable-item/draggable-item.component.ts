@@ -1,21 +1,27 @@
 import { CdkDrag, CdkDragHandle, CdkDragEnd } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   selector: 'app-draggable-item',
   standalone: true,
-  imports: [CdkDrag, CdkDragHandle],
+  imports: [CdkDrag, CdkDragHandle, ResizableModule, CommonModule],
   templateUrl: './draggable-item.component.html',
   styleUrl: './draggable-item.component.css'
 })
 export class DraggableItemComponent {
-  @Input() label: string = 'Etiqueta editable';
+  @Input() label?: string = 'Etiqueta editable';
+  @Input() imageUrl?: string;
   @Input() spanId!: string;
   @Input() dragPosition = { x: 0, y: 0 };
   @Output() select: EventEmitter<any> = new EventEmitter();
   @Output() remove: EventEmitter<string> = new EventEmitter();
   @Output() positionChange: EventEmitter<{ x: number, y: number }> = new EventEmitter();
   @ViewChild('editableSpan') editableSpan!: ElementRef;
+
+  width: number | any = 100;
+  height: number | any = 100;
 
   /*hace que el span sea editable*/
   onInput(event: Event): void {
@@ -44,5 +50,28 @@ export class DraggableItemComponent {
     if (target.tagName === 'A') {
       window.open(target.getAttribute('href'), '_blank');
     }
+  }
+
+  validate(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX: number = 50;
+    if (
+      event.rectangle.width &&
+      event.rectangle.height &&
+      (event.rectangle.width < MIN_DIMENSIONS_PX ||
+        event.rectangle.height < MIN_DIMENSIONS_PX)
+    ) {
+      return false;
+    }
+    return true;
+  }
+  public style: object = {};
+  onResizeEnd(event: ResizeEvent): void {
+    this.style = {
+      position: 'fixed',
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
   }
 }

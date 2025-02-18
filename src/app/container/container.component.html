@@ -25,6 +25,7 @@
       <button (click)="addDraggableComponent('label')">
         <mat-icon aria-hidden="false" aria-label="text_fields" fontIcon="text_fields"/>
       </button>
+      <input type="file" (change)="onImageSelected($event)">
     </div>
   </div>
 
@@ -32,6 +33,7 @@
     @for (type of workSpace; track type; let idx = $index) {
       <app-draggable-item
         [label]="type.label"
+        [imageUrl]="type.imageUrl"
         [spanId]="'editable-span-' + idx"
         [dragPosition]="type.position"
         (select)="handleSelected($event)"

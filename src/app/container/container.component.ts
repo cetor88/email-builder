@@ -11,6 +11,7 @@ import { DraggableItemComponent } from '../draggable-item/draggable-item.compone
 
 const COMPONENTS = [
   MatButtonToggleModule,
+  DraggableItemComponent,
   MatButtonModule,
   MatSelectModule,
   MatFormFieldModule,
@@ -23,22 +24,25 @@ const COMPONENTS = [
 @Component({
   selector: 'app-container',
   standalone: true,
-  imports: [COMPONENTS, DraggableItemComponent],
+  imports: [COMPONENTS],
   templateUrl: './container.component.html',
   styleUrl: './container.component.css'
 })
 export class ContainerComponent {
-  workSpace: { label: string, position: { x: number, y: number } }[] = [];
+  workSpace: { label?: string, imageUrl?: string, position: { x: number, y: number } }[] = [];
   spanSelected: any;
   selectedText: any;
   @ViewChildren(DraggableItemComponent) draggableItems!: QueryList<DraggableItemComponent>;
 
   /*Agrega el componente al workSpace*/
-  addDraggableComponent(type: 'label' | 'input') {
+  addDraggableComponent(type: 'label' | 'input' | 'image', imageUrl?: string) {
     if (type === 'label') {
       const newLabel = `Etiqueta ${this.workSpace.length + 1}`;
       const newPosition = { x: 0, y: this.workSpace.length * 50 };
       this.workSpace.push({ label: newLabel, position: newPosition });
+    } else if (type === 'image' && imageUrl) {
+      const newPosition = { x: 0, y: this.workSpace.length * 50 };
+      this.workSpace.push({ imageUrl, position: newPosition });
     }
   }
 
@@ -93,10 +97,10 @@ export class ContainerComponent {
         break;
       case 'link':
         if (selection.toString().length > 0) {
-          const range = selection.getRangeAt(0);
           const link = document.createElement('a');
           link.href = property;
           link.textContent = range.toString();
+          link.classList.add('custom-link-class');
           range.deleteContents();
           range.insertNode(link);
         }
@@ -116,6 +120,17 @@ export class ContainerComponent {
     const item = this.workSpace.find(item => `editable-span-${this.workSpace.indexOf(item)}` === spanId);
     if (item) {
       item.position = position;
+    }
+  }
+
+  onImageSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.addDraggableComponent('image', e.target.result);
+      };
+      reader.readAsDataURL(file);
     }
   }
 }

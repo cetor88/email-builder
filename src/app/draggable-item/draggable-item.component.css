@@ -25,3 +25,47 @@
   width: 14px;
   height: 14px;
 }
+
+::ng-deep .custom-link-class {
+  cursor: pointer;
+}
+
+.custom-span {
+  width: 100%;
+}
+
+.custom-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.resize-handle-top,
+.resize-handle-bottom {
+  position: absolute;
+  height: 5px;
+  width: 100%;
+  /* background-color: white; */
+  cursor: row-resize;
+}
+
+.resize-handle-top {
+  top: 0;
+}
+.resize-handle-bottom {
+  bottom: 0;
+}
+
+.resize-handle-left,
+.resize-handle-right {
+  position: absolute;
+  height: 100%;
+  width: 5px;
+  cursor: col-resize;
+}
+.resize-handle-left {
+  left: 0;
+}
+.resize-handle-right {
+  right: 0;
+}
