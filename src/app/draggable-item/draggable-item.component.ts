@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragHandle, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
@@ -11,10 +11,11 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 export class DraggableItemComponent {
   @Input() label: string = 'Etiqueta editable';
   @Input() spanId!: string;
+  @Input() dragPosition = { x: 0, y: 0 };
   @Output() select: EventEmitter<any> = new EventEmitter();
   @Output() remove: EventEmitter<string> = new EventEmitter();
+  @Output() positionChange: EventEmitter<{ x: number, y: number }> = new EventEmitter();
   @ViewChild('editableSpan') editableSpan!: ElementRef;
-  dragPosition = {x: 110, y: 110};
 
   /*hace que el span sea editable*/
   onInput(event: Event): void {
@@ -33,8 +34,15 @@ export class DraggableItemComponent {
     this.remove.emit(this.spanId);
   }
 
-  changePosition() {
-    console.log('entre :>> ', this.dragPosition);
-    this.dragPosition = {x: this.dragPosition.x + 50, y: this.dragPosition.y + 50};
+  onDragEnded(event: CdkDragEnd) {
+    const { x, y } = event.source.getFreeDragPosition();
+    this.positionChange.emit({ x, y });
+  }
+
+  onClick(event: MouseEvent) {
+    const target = event.target as HTMLElement | any;
+    if (target.tagName === 'A') {
+      window.open(target.getAttribute('href'), '_blank');
+    }
   }
 }

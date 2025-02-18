@@ -37,10 +37,12 @@
       <!-- <div *CdkDragPlaceholder>XD</div> -->
       @for (type of workSpace; track type; let idx = $index) {
         <app-draggable-item
-          [label]="type"
+          [label]="type.label"
           [spanId]="'editable-span-' + idx"
+          [dragPosition]="type.position"
           (select)="handleSelected($event)"
           (remove)="removeDraggableComponent($event, idx)"
+          (positionChange)="updatePosition($event, 'editable-span-' + idx)"
         />
       } @empty {
         <div class="empty-state">

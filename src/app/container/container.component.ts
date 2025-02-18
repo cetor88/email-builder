@@ -35,7 +35,8 @@ const COMPONENTS = [
 })
 export class ContainerComponent {
   // components = ['componente1', 'componente2', 'componente3']; //TODO: generar un array con los componentes que se pueden agregar
-  workSpace: string[] = ['Zero'/*, 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'*/];
+  // workSpace: string[] = ['Zero'/*, 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'*/];
+  workSpace: { label: string, position: { x: number, y: number } }[] = [];
   spanSelected: any;
   selectedText: any;
   @ViewChildren(DraggableItemComponent) draggableItems!: QueryList<DraggableItemComponent>;
@@ -44,7 +45,8 @@ export class ContainerComponent {
   addDraggableComponent(type: 'label' | 'input') {
     if (type === 'label') {
       const newLabel = `Etiqueta ${this.workSpace.length + 1}`;
-      this.workSpace.push(newLabel);
+      const newPosition = { x: 0, y: this.workSpace.length * 50 };
+      this.workSpace.push({ label: newLabel, position: newPosition });
     }
   }
 
@@ -131,9 +133,16 @@ export class ContainerComponent {
     }
   }
 
-  /*retorna el objeto seleccionado*/
+  /*retorna el objeto y texto seleccionado*/
   handleSelected(event: any) {
     this.spanSelected = event.spanId;
     this.selectedText = event.selectedText;
+  }
+
+  updatePosition(position: { x: number, y: number }, spanId: string) {
+    const item = this.workSpace.find(item => `editable-span-${this.workSpace.indexOf(item)}` === spanId);
+    if (item) {
+      item.position = position;
+    }
   }
 }
