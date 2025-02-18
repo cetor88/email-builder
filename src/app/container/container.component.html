@@ -1,4 +1,5 @@
-<div cdkDropListGroup>
+<!-- <div cdkDropListGroup> -->
+<div class="list-group">
   <div class="example-container">
     <div>
       <h3>Barra de herramientas</h3>
@@ -29,20 +30,22 @@
   </div>
 
   <!-- <div class="example-container"> -->
-    <div class="example-boundary"
-      cdkDropList
+    <!-- cdkDropList
       cdkDropListOrientation="mixed"
-      (cdkDropListDropped)="drop($event)"
-    >
+      (cdkDropListDropped)="drop($event)" -->
+    <div class="example-boundary">
       <!-- <div *CdkDragPlaceholder>XD</div> -->
       @for (type of workSpace; track type; let idx = $index) {
         <app-draggable-item
           [label]="type"
           [spanId]="'editable-span-' + idx"
           (select)="handleSelected($event)"
+          (remove)="removeDraggableComponent($event, idx)"
         />
       } @empty {
-        <h6>Agrega un componente</h6>
+        <div class="empty-state">
+          <h6>Agrega un componente</h6>
+        </div>
       }
     </div>
   </div>

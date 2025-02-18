@@ -35,7 +35,7 @@ const COMPONENTS = [
 })
 export class ContainerComponent {
   // components = ['componente1', 'componente2', 'componente3']; //TODO: generar un array con los componentes que se pueden agregar
-  workSpace: string[] = [];
+  workSpace: string[] = ['Zero'/*, 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'*/];
   spanSelected: any;
   selectedText: any;
   @ViewChildren(DraggableItemComponent) draggableItems!: QueryList<DraggableItemComponent>;
@@ -48,24 +48,31 @@ export class ContainerComponent {
     }
   }
 
-  /*Se encarga de que al mover el compoenete lo posicione*/
-  drop(event: CdkDragDrop<string[] | any>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-       this.workSpace, // event.container.data, html: [cdkDropListData]="workSpace"
-        event.previousIndex,
-        event.currentIndex
-      );
-    } else {
-      // this.addDraggableComponent();
-      // copyArrayItem(
-      //   event.previousContainer.data,
-      //   event.container.data,
-      //   event.previousIndex,
-      //   event.currentIndex,
-      // );
+  /*Elimina el componente del workSpace*/
+  removeDraggableComponent(spanId: string, index: any) {
+    if (index !== -1) {
+      this.workSpace.splice(index, 1);
     }
   }
+
+  /*Se encarga de que al mover el compoenete lo posicione*/
+  // drop(event: CdkDragDrop<string[] | any>) {
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(
+  //      this.workSpace, // event.container.data, html: [cdkDropListData]="workSpace"
+  //       event.previousIndex,
+  //       event.currentIndex
+  //     );
+  //   } else {
+  //     // this.addDraggableComponent();
+  //     // copyArrayItem(
+  //     //   event.previousContainer.data,
+  //     //   event.container.data,
+  //     //   event.previousIndex,
+  //     //   event.currentIndex,
+  //     // );
+  //   }
+  // }
 
   /*cambia las propiedades del objeto seleccionado*/
   changeProperties(typeTool: any, property?: any): void {
@@ -87,7 +94,7 @@ export class ContainerComponent {
         break;
       case 'bold':
         if (selection.toString().length > 0) {
-          spanWrapper.style.fontWeight = spanWrapper.style.fontWeight === 'bold' ? 'normal' : 'bold';
+          spanWrapper.style.fontWeight = 'bold';
           range.surroundContents(spanWrapper);
         } else {
           span.style.fontWeight = span.style.fontWeight === 'bold' ? 'normal' : 'bold';
@@ -95,7 +102,7 @@ export class ContainerComponent {
         break;
       case 'italic':
         if (selection.toString().length > 0) {
-          spanWrapper.style.fontWeight = spanWrapper.style.fontWeight === 'italic' ? 'normal' : 'italic';
+          spanWrapper.style.fontStyle = 'italic';
           range.surroundContents(spanWrapper);
         } else {
           span.style.fontStyle = span.style.fontStyle === 'italic' ? 'normal' : 'italic';
@@ -103,7 +110,7 @@ export class ContainerComponent {
         break;
       case 'underline':
         if (selection.toString().length > 0) {
-          spanWrapper.style.fontWeight = spanWrapper.style.textDecoration === 'underline' ? 'none' : 'underline';
+          spanWrapper.style.textDecoration = 'underline';
           range.surroundContents(spanWrapper);
         } else {
           span.style.textDecoration = span.style.textDecoration === 'underline' ? 'none' : 'underline';

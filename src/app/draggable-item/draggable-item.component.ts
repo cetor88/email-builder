@@ -12,7 +12,9 @@ export class DraggableItemComponent {
   @Input() label: string = 'Etiqueta editable';
   @Input() spanId!: string;
   @Output() select: EventEmitter<any> = new EventEmitter();
+  @Output() remove: EventEmitter<string> = new EventEmitter();
   @ViewChild('editableSpan') editableSpan!: ElementRef;
+  dragPosition = {x: 110, y: 110};
 
   /*hace que el span sea editable*/
   onInput(event: Event): void {
@@ -25,5 +27,14 @@ export class DraggableItemComponent {
     const spanId = this.editableSpan.nativeElement.id;
     const selectedText = window.getSelection();
     this.select.emit({ event, spanId, selectedText });
+  }
+
+  onDoubleClick() {
+    this.remove.emit(this.spanId);
+  }
+
+  changePosition() {
+    console.log('entre :>> ', this.dragPosition);
+    this.dragPosition = {x: this.dragPosition.x + 50, y: this.dragPosition.y + 50};
   }
 }
