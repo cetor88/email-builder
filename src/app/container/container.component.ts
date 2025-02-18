@@ -68,7 +68,7 @@ export class ContainerComponent {
   }
 
   /*cambia las propiedades del objeto seleccionado*/
-  changeProperties(type: any, url?: any): void {
+  changeProperties(typeTool: any, property?: any): void {
     const selectedComponent = this.draggableItems.find(item => item.spanId === this.spanSelected);
     if (!selectedComponent) { return; }
     const span = selectedComponent.editableSpan.nativeElement;
@@ -76,34 +76,44 @@ export class ContainerComponent {
     const range = selection.getRangeAt(0);
     const spanWrapper = document.createElement('span');
 
-    switch (type) {
+    switch (typeTool) {
       case 'color':
         if (selection.toString().length > 0) {
-          spanWrapper.style.color = 'red';
+          spanWrapper.style.color = property;
           range.surroundContents(spanWrapper);
         } else {
-          span.style.color = 'red';
+          span.style.color = property;
         }
         break;
       case 'bold':
         if (selection.toString().length > 0) {
-          spanWrapper.style.fontWeight = span.style.fontWeight === 'bold' ? 'normal' : 'bold';
+          spanWrapper.style.fontWeight = spanWrapper.style.fontWeight === 'bold' ? 'normal' : 'bold';
           range.surroundContents(spanWrapper);
         } else {
           span.style.fontWeight = span.style.fontWeight === 'bold' ? 'normal' : 'bold';
         }
         break;
       case 'italic':
-        span.style.fontStyle = span.style.fontStyle === 'italic' ? 'normal' : 'italic';
+        if (selection.toString().length > 0) {
+          spanWrapper.style.fontWeight = spanWrapper.style.fontWeight === 'italic' ? 'normal' : 'italic';
+          range.surroundContents(spanWrapper);
+        } else {
+          span.style.fontStyle = span.style.fontStyle === 'italic' ? 'normal' : 'italic';
+        }
         break;
       case 'underline':
-        span.style.textDecoration = span.style.textDecoration === 'underline' ? 'none' : 'underline';
+        if (selection.toString().length > 0) {
+          spanWrapper.style.fontWeight = spanWrapper.style.textDecoration === 'underline' ? 'none' : 'underline';
+          range.surroundContents(spanWrapper);
+        } else {
+          span.style.textDecoration = span.style.textDecoration === 'underline' ? 'none' : 'underline';
+        }
         break;
       case 'link':
         if (selection.toString().length > 0) {
           const range = selection.getRangeAt(0);
           const link = document.createElement('a');
-          link.href = url;
+          link.href = property;
           link.textContent = range.toString();
           range.deleteContents();
           range.insertNode(link);

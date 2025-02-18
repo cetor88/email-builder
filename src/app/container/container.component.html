@@ -2,9 +2,8 @@
   <div class="example-container">
     <div>
       <h3>Barra de herramientas</h3>
-      <button (click)="changeProperties('color')">
-        <mat-icon aria-hidden="false" aria-label="format_paint" fontIcon="format_paint"/>
-      </button>
+      <input class="color-picker" #colorPicker type="color" (change)="changeProperties('color', colorPicker.value)">
+
       <button (click)="changeProperties('bold')">
         <mat-icon aria-hidden="false" aria-label="format_bold" fontIcon="format_bold"/>
       </button>
@@ -14,11 +13,12 @@
       <button (click)="changeProperties('underline')">
         <mat-icon aria-hidden="false" aria-label="format_underlined" fontIcon="format_underlined"/>
       </button>
-
-      <input #urlInput type="text" placeholder="Enter URL">
-      <button (click)="changeProperties('link', urlInput.value)">
-        <mat-icon aria-hidden="false" aria-label="link" fontIcon="link"/>
-      </button>
+      <div class="button-link">
+        <button (click)="changeProperties('link', urlInput.value)">
+          <mat-icon aria-hidden="false" aria-label="link" fontIcon="link"/>
+        </button>
+        <input #urlInput type="text" placeholder="Enter URL" style="height: 27px;">
+      </div>
     </div>
     <div>
       <h3>Componentes</h3>
@@ -28,8 +28,7 @@
     </div>
   </div>
 
-  <div class="example-container">
-    <legend>workSpace</legend>
+  <!-- <div class="example-container"> -->
     <div class="example-boundary"
       cdkDropList
       cdkDropListOrientation="mixed"
@@ -47,4 +46,4 @@
       }
     </div>
   </div>
-</div>
+<!-- </div> -->
