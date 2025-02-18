@@ -1,22 +1,16 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-
-import {MatButtonModule} from '@angular/material/button';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {FormsModule} from '@angular/forms';
-
-import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { FormsModule } from '@angular/forms';
 import { DraggableItemComponent } from '../draggable-item/draggable-item.component';
 
 const COMPONENTS = [
   MatButtonToggleModule,
-  CdkDropList,
-  CdkDropListGroup,
   MatButtonModule,
   MatSelectModule,
   MatFormFieldModule,
@@ -34,8 +28,6 @@ const COMPONENTS = [
   styleUrl: './container.component.css'
 })
 export class ContainerComponent {
-  // components = ['componente1', 'componente2', 'componente3']; //TODO: generar un array con los componentes que se pueden agregar
-  // workSpace: string[] = ['Zero'/*, 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'*/];
   workSpace: { label: string, position: { x: number, y: number } }[] = [];
   spanSelected: any;
   selectedText: any;
@@ -56,25 +48,6 @@ export class ContainerComponent {
       this.workSpace.splice(index, 1);
     }
   }
-
-  /*Se encarga de que al mover el compoenete lo posicione*/
-  // drop(event: CdkDragDrop<string[] | any>) {
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(
-  //      this.workSpace, // event.container.data, html: [cdkDropListData]="workSpace"
-  //       event.previousIndex,
-  //       event.currentIndex
-  //     );
-  //   } else {
-  //     // this.addDraggableComponent();
-  //     // copyArrayItem(
-  //     //   event.previousContainer.data,
-  //     //   event.container.data,
-  //     //   event.previousIndex,
-  //     //   event.currentIndex,
-  //     // );
-  //   }
-  // }
 
   /*cambia las propiedades del objeto seleccionado*/
   changeProperties(typeTool: any, property?: any): void {
