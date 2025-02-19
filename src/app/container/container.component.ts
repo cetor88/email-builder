@@ -149,11 +149,11 @@ export class ContainerComponent {
   }
 
   preview() {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+
     const content = document.getElementsByClassName('example-boundary')[0]
     const clonedContent = content.cloneNode(true) as HTMLElement;
-    /*let destinoContent = this.dialogPreview.elementRef.nativeElement.querySelector('.mat-mdc-dialog-content');
-    destinoContent.innerHTML = content.innerHTML;*/
-
     console.log(content);
 
     const dialogRef = this.matDialog.open(this.dialogPreview,
@@ -162,8 +162,7 @@ export class ContainerComponent {
         maxWidth: '1250px',
       }
     );
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+
     dialogRef.afterOpened().subscribe(() => {
       const dialogElement = dialogRef.componentInstance;
       const dialogContent = dialogElement.querySelector('.mat-dialog-content');
