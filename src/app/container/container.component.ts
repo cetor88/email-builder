@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -39,25 +39,47 @@ const COMPONENTS = [
   templateUrl: './container.component.html',
   styleUrl: './container.component.css'
 })
-export class ContainerComponent {
+export class ContainerComponent implements OnInit {
   workSpace: { label?: string, imageUrl?: string, position: { x: number, y: number } }[] = [];
   spanSelected: any;
   selectedText: any;
+  fontSize: number = 16;
+  // htmlContent: string = '';
   @ViewChildren(DraggableItemComponent) draggableItems!: QueryList<DraggableItemComponent>;
   @ViewChild('dialogPreview') dialogPreview!: TemplateRef<any>;
 
   constructor(private matDialog: MatDialog, private cdr: ChangeDetectorRef) { }
 
+
+  ngOnInit() {
+    this.loadWorkSpace();
+  }
+
+  /*Carga el estado de workSpace desde localStorage*/
+  loadWorkSpace() {
+    const savedWorkSpace = localStorage.getItem('workSpace');
+    if (savedWorkSpace) {
+      this.workSpace = JSON.parse(savedWorkSpace);
+    }
+  }
+
+  /*Guarda el estado de workSpace en localStorage*/
+  saveWorkSpace() {
+    localStorage.setItem('workSpace', JSON.stringify(this.workSpace));
+  }
+
   /*Agrega el componente al workSpace*/
   addDraggableComponent(type: 'label' | 'input' | 'image', imageUrl?: string) {
+    const position = { x: 0, y: 0 };
+
     if (type === 'label') {
-      const newLabel = `Etiqueta ${this.workSpace.length + 1}`;
-      const newPosition = { x: 0, y: this.workSpace.length * 50 };
-      this.workSpace.push({ label: newLabel, position: newPosition });
+      const label = `Etiqueta ${this.workSpace.length + 1}`;
+      this.workSpace.push({ label, position });
     } else if (type === 'image' && imageUrl) {
-      const newPosition = { x: 0, y: this.workSpace.length * 50 };
-      this.workSpace.push({ imageUrl, position: newPosition });
+      this.workSpace.push({ imageUrl, position });
     }
+    this.saveWorkSpace();
+    // this.updateHtmlContent();
   }
 
   /*Elimina el componente del workSpace*/
@@ -65,6 +87,8 @@ export class ContainerComponent {
     if (index !== -1) {
       this.workSpace.splice(index, 1);
     }
+    this.saveWorkSpace();
+    // this.updateHtmlContent();
   }
 
   /*cambia las propiedades del objeto seleccionado*/
@@ -119,9 +143,23 @@ export class ContainerComponent {
           range.insertNode(link);
         }
         break;
+      case 'fontSize':
+        if (selection.toString().length > 0) {
+          spanWrapper.style.fontSize = property;
+          range.surroundContents(spanWrapper);
+        } else {
+          span.style.fontSize = property;
+        }
+        break;
       default:
         break;
     }
+  }
+
+  /*Incrementa o decrementa el tamaño de la fuente*/
+  changeFontSize(delta: number) {
+    this.fontSize += delta;
+    this.changeProperties('fontSize', this.fontSize + 'px');
   }
 
   /*retorna el objeto y texto seleccionado*/
@@ -135,6 +173,7 @@ export class ContainerComponent {
     if (item) {
       item.position = position;
     }
+    this.saveWorkSpace();
   }
 
   onImageSelected(event: any) {
