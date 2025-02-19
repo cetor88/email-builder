@@ -19,6 +19,11 @@
         </button>
         <input #urlInput type="text" placeholder="Enter URL" style="height: 27px;">
       </div>
+      <div class="font-size-control">
+        <button class="font-size-button" (click)="changeFontSize(-1)">-</button>
+        <input class="font-size-input" type="number" id="fontSize" [(ngModel)]="fontSize" (change)="changeProperties('fontSize', fontSize + 'px')">
+        <button class="font-size-button" (click)="changeFontSize(1)">+</button>
+      </div>
     </div>
     <div>
       <h3>Componentes</h3>

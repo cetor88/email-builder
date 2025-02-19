@@ -22,6 +22,7 @@ export class DraggableItemComponent {
 
   width: number | any = 100;
   height: number | any = 100;
+  style: object = {};
 
   /*hace que el span sea editable*/
   onInput(event: Event): void {
@@ -64,7 +65,7 @@ export class DraggableItemComponent {
     }
     return true;
   }
-  public style: object = {};
+
   onResizeEnd(event: ResizeEvent): void {
     this.style = {
       position: 'fixed',
