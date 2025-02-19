@@ -1,5 +1,6 @@
 [cdkDrag] {
-  width: 100px;
+  width: auto;
+  height: auto;
   padding: 10px;
   border: 1px solid #000;
   background-color: #f0f0f0;
@@ -32,6 +33,7 @@
 
 .custom-span {
   width: 100%;
+  height: auto !important;
 }
 
 .custom-image {
@@ -45,7 +47,6 @@
   position: absolute;
   height: 5px;
   width: 100%;
-  /* background-color: white; */
   cursor: row-resize;
 }
 
@@ -68,4 +69,12 @@
 }
 .resize-handle-right {
   right: 0;
+}
+svg {
+  padding-left: 12px;
+  padding-top: 18px;
+}
+svg:hover {
+  fill: #ea491a;
+  transition: background-color 2s 1000ms;
 }

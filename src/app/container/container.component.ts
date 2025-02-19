@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -8,6 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule } from '@angular/forms';
 import { DraggableItemComponent } from '../draggable-item/draggable-item.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ListadoPlantillasComponent } from "../listado-plantillas/listado-plantillas.component";
+import {MatCardModule} from '@angular/material/card';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 
 const COMPONENTS = [
   MatButtonToggleModule,
@@ -18,13 +22,20 @@ const COMPONENTS = [
   MatInputModule,
   MatSidenavModule,
   FormsModule,
-  MatIconModule
+  MatIconModule,
+  MatTabsModule,
+  ListadoPlantillasComponent,
+  MatCardModule,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose
 ];
 
 @Component({
   selector: 'app-container',
   standalone: true,
-  imports: [COMPONENTS],
+  imports: [COMPONENTS ],
   templateUrl: './container.component.html',
   styleUrl: './container.component.css'
 })
@@ -33,6 +44,9 @@ export class ContainerComponent {
   spanSelected: any;
   selectedText: any;
   @ViewChildren(DraggableItemComponent) draggableItems!: QueryList<DraggableItemComponent>;
+  @ViewChild('dialogPreview') dialogPreview!: TemplateRef<any>;
+
+  constructor(private matDialog: MatDialog, private cdr: ChangeDetectorRef) { }
 
   /*Agrega el componente al workSpace*/
   addDraggableComponent(type: 'label' | 'input' | 'image', imageUrl?: string) {
@@ -132,5 +146,31 @@ export class ContainerComponent {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  preview() {
+    const content = document.getElementsByClassName('example-boundary')[0]
+    const clonedContent = content.cloneNode(true) as HTMLElement;
+    /*let destinoContent = this.dialogPreview.elementRef.nativeElement.querySelector('.mat-mdc-dialog-content');
+    destinoContent.innerHTML = content.innerHTML;*/
+
+    console.log(content);
+
+    const dialogRef = this.matDialog.open(this.dialogPreview,
+      {
+        width: '960px',
+        maxWidth: '1250px',
+      }
+    );
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+    dialogRef.afterOpened().subscribe(() => {
+      const dialogElement = dialogRef.componentInstance;
+      const dialogContent = dialogElement.querySelector('.mat-dialog-content');
+      if (dialogContent) {
+        dialogContent.appendChild(clonedContent);
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

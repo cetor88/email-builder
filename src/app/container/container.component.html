@@ -1,49 +1,100 @@
-<div class="list-group">
-  <div class="example-container">
-    <div>
-      <h3>Barra de herramientas</h3>
-      <input class="color-picker" #colorPicker type="color" (change)="changeProperties('color', colorPicker.value)">
+<mat-tab-group>
+  <mat-tab label="Listado de Plantillas">
 
-      <button (click)="changeProperties('bold')">
-        <mat-icon aria-hidden="false" aria-label="format_bold" fontIcon="format_bold"/>
-      </button>
-      <button (click)="changeProperties('italic')">
-        <mat-icon aria-hidden="false" aria-label="format_italic" fontIcon="format_italic"/>
-      </button>
-      <button (click)="changeProperties('underline')">
-        <mat-icon aria-hidden="false" aria-label="format_underlined" fontIcon="format_underlined"/>
-      </button>
-      <div class="button-link">
-        <button (click)="changeProperties('link', urlInput.value)">
-          <mat-icon aria-hidden="false" aria-label="link" fontIcon="link"/>
-        </button>
-        <input #urlInput type="text" placeholder="Enter URL" style="height: 27px;">
+    <app-listado-plantillas></app-listado-plantillas>
+
+  </mat-tab>
+
+  <mat-tab label="Decorador de mail">
+
+    <div class="list-group">
+      <div class="example-container">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title> <h3>Barra de herramientas</h3></mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div>
+              <input class="color-picker" #colorPicker type="color" (change)="changeProperties('color', colorPicker.value)">
+
+              <button (click)="changeProperties('bold')">
+                <mat-icon aria-hidden="false" aria-label="format_bold" fontIcon="format_bold"/>
+              </button>
+              <button (click)="changeProperties('italic')">
+                <mat-icon aria-hidden="false" aria-label="format_italic" fontIcon="format_italic"/>
+              </button>
+              <button (click)="changeProperties('underline')">
+                <mat-icon aria-hidden="false" aria-label="format_underlined" fontIcon="format_underlined"/>
+              </button>
+              <div class="button-link">
+                <button (click)="changeProperties('link', urlInput.value)">
+                  <mat-icon aria-hidden="false" aria-label="link" fontIcon="link"/>
+                </button>
+                <input #urlInput type="text" value="https://www.gnp.com.mx/aviso-de-privacidad/integral" placeholder="Enter URL" style="height: 27px;">
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title> <h3>Barra de Componentes</h3></mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <button (click)="addDraggableComponent('label')">
+              <mat-icon aria-hidden="false" aria-label="text_fields" fontIcon="text_fields"/>
+            </button>
+
+            <label for="file-upload" class="custom-file-upload">
+              <mat-icon aria-hidden="false" aria-label="image" fontIcon="image"/>
+            </label>
+            <input id="file-upload" type="file" (change)="onImageSelected($event)">
+            <br>
+
+            <button (click)="preview()">
+              <i class="icon-youtube-play"></i>
+              <mat-icon aria-hidden="false" aria-label="play_circle" fontIcon="play_circle"/>
+            </button>
+
+
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+
+
+      </div>
+
+      <div class="example-boundary">
+        @for (type of workSpace; track type; let idx = $index) {
+          <app-draggable-item
+            [label]="type.label"
+            [imageUrl]="type.imageUrl"
+            [spanId]="'editable-span-' + idx"
+            [dragPosition]="type.position"
+            (select)="handleSelected($event)"
+            (remove)="removeDraggableComponent($event, idx)"
+            (positionChange)="updatePosition($event, 'editable-span-' + idx)"
+          />
+        } @empty {
+          <div class="empty-state">
+            <h6>Agrega un componente</h6>
+          </div>
+        }
       </div>
     </div>
-    <div>
-      <h3>Componentes</h3>
-      <button (click)="addDraggableComponent('label')">
-        <mat-icon aria-hidden="false" aria-label="text_fields" fontIcon="text_fields"/>
-      </button>
-      <input type="file" (change)="onImageSelected($event)">
-    </div>
-  </div>
+  </mat-tab>
+</mat-tab-group>
 
-  <div class="example-boundary">
-    @for (type of workSpace; track type; let idx = $index) {
-      <app-draggable-item
-        [label]="type.label"
-        [imageUrl]="type.imageUrl"
-        [spanId]="'editable-span-' + idx"
-        [dragPosition]="type.position"
-        (select)="handleSelected($event)"
-        (remove)="removeDraggableComponent($event, idx)"
-        (positionChange)="updatePosition($event, 'editable-span-' + idx)"
-      />
-    } @empty {
-      <div class="empty-state">
-        <h6>Agrega un componente</h6>
-      </div>
-    }
-  </div>
-</div>
+
+<ng-template #dialogPreview>
+  <h2 mat-dialog-title>Vista Previa</h2>
+  <mat-dialog-content class="mat-dialog-content">
+    <!-- El contenido clonado se agregará aquí -->
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cerrar</button>
+  </mat-dialog-actions>
+</ng-template>
