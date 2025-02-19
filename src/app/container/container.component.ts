@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -28,11 +28,30 @@ const COMPONENTS = [
   templateUrl: './container.component.html',
   styleUrl: './container.component.css'
 })
-export class ContainerComponent {
+export class ContainerComponent implements OnInit {
   workSpace: { label?: string, imageUrl?: string, position: { x: number, y: number } }[] = [];
   spanSelected: any;
   selectedText: any;
+  // htmlContent: string = '';
   @ViewChildren(DraggableItemComponent) draggableItems!: QueryList<DraggableItemComponent>;
+
+
+  ngOnInit() {
+    this.loadWorkSpace();
+  }
+
+  /*Carga el estado de workSpace desde localStorage*/
+  loadWorkSpace() {
+    const savedWorkSpace = localStorage.getItem('workSpace');
+    if (savedWorkSpace) {
+      this.workSpace = JSON.parse(savedWorkSpace);
+    }
+  }
+
+  /*Guarda el estado de workSpace en localStorage*/
+  saveWorkSpace() {
+    localStorage.setItem('workSpace', JSON.stringify(this.workSpace));
+  }
 
   /*Agrega el componente al workSpace*/
   addDraggableComponent(type: 'label' | 'input' | 'image', imageUrl?: string) {
@@ -44,6 +63,8 @@ export class ContainerComponent {
       const newPosition = { x: 0, y: this.workSpace.length * 50 };
       this.workSpace.push({ imageUrl, position: newPosition });
     }
+    this.saveWorkSpace();
+    // this.updateHtmlContent();
   }
 
   /*Elimina el componente del workSpace*/
@@ -51,6 +72,8 @@ export class ContainerComponent {
     if (index !== -1) {
       this.workSpace.splice(index, 1);
     }
+    this.saveWorkSpace();
+    // this.updateHtmlContent();
   }
 
   /*cambia las propiedades del objeto seleccionado*/
@@ -121,6 +144,7 @@ export class ContainerComponent {
     if (item) {
       item.position = position;
     }
+    this.saveWorkSpace();
   }
 
   onImageSelected(event: any) {
@@ -133,4 +157,16 @@ export class ContainerComponent {
       reader.readAsDataURL(file);
     }
   }
+
+  /*Actualiza el contenido HTML*/
+  // updateHtmlContent() {
+  //   this.htmlContent = this.workSpace.map(item => {
+  //     if (item.label) {
+  //       return `<span>${item.label}</span>`;
+  //     } else if (item.imageUrl) {
+  //       return `<img src="${item.imageUrl}" alt="Imagen cargada" />`;
+  //     }
+  //     return '';
+  //   }).join('');
+  // }
 }
